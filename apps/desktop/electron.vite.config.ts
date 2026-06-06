@@ -3,7 +3,11 @@ import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [
+      externalizeDepsPlugin({
+        exclude: ['electron-log', 'electron-updater']
+      })
+    ],
     build: {
       outDir: 'dist/main',
       rollupOptions: {
