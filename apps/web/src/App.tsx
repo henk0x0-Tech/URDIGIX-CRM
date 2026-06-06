@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
+import AutoUpdater from './components/common/AutoUpdater';
 
 // Layouts
 import DashboardLayout from './components/layout/DashboardLayout';
@@ -30,40 +31,43 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 export const App: React.FC = () => {
   return (
-    <Routes>
-      {/* Auth Routes */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<div className="text-center font-bold p-4">Forgot Password (Simulated)</div>} />
-        <Route path="/reset-password" element={<div className="text-center font-bold p-4">Reset Password (Simulated)</div>} />
-      </Route>
+    <>
+      <AutoUpdater />
+      <Routes>
+        {/* Auth Routes */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<div className="text-center font-bold p-4">Forgot Password (Simulated)</div>} />
+          <Route path="/reset-password" element={<div className="text-center font-bold p-4">Reset Password (Simulated)</div>} />
+        </Route>
 
-      {/* Protected Dashboard Routes */}
-      <Route
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/clients" element={<ClientsPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/invoices" element={<InvoicesPage />} />
-        <Route path="/payments" element={<PaymentsPage />} />
-        <Route path="/employees" element={<EmployeesPage />} />
-        <Route path="/documents" element={<DocumentsPage />} />
-        <Route path="/calendar" element={<CalendarPage />} />
-        <Route path="/activities" element={<ActivitiesPage />} />
-        <Route path="/reports" element={<ReportsPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-      </Route>
+        {/* Protected Dashboard Routes */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/clients" element={<ClientsPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="/payments" element={<PaymentsPage />} />
+          <Route path="/employees" element={<EmployeesPage />} />
+          <Route path="/documents" element={<DocumentsPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/activities" element={<ActivitiesPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Route>
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 };
 

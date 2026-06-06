@@ -51,6 +51,6 @@ fileAssociations:
 
 publish:
   provider: github
-  owner: urdigix
-  repo: urdigix-erp
+  owner: henk0x0-Tech
+  repo: URDIGIX-CRM
   releaseType: release

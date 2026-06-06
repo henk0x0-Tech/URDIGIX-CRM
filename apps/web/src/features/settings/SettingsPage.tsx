@@ -5,13 +5,14 @@ import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import Tabs from '../../components/ui/Tabs';
 import { settingsService } from '../../services/dataService';
-import { ShieldCheck, HardDrive, Building, Key } from 'lucide-react';
+import { ShieldCheck, HardDrive, Building, Key, DownloadCloud, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('company');
   const [companySettings, setCompanySettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
 
   // Form states
   const [name, setName] = useState('');
@@ -85,10 +86,33 @@ export const SettingsPage: React.FC = () => {
     }
   };
 
+  const handleCheckUpdates = async () => {
+    if (!window.electronAPI) {
+      toast.error('Auto-updates are only available in the Desktop App.');
+      return;
+    }
+    setIsCheckingUpdate(true);
+    try {
+      const res = await window.electronAPI.checkForUpdates();
+      if (res.status === 'ok') {
+        toast.success('Checking for updates...');
+      } else if (res.status === 'dev-mode') {
+        toast.error('Auto-updater is disabled in development mode.');
+      } else {
+        toast.error(res.error || 'Failed to check for updates.');
+      }
+    } catch (err) {
+      toast.error('Failed to check for updates.');
+    } finally {
+      setIsCheckingUpdate(false);
+    }
+  };
+
   const settingTabs = [
     { id: 'company', label: 'Company Profile', icon: <Building className="h-4 w-4" /> },
     { id: 'security', label: 'Security & Auth', icon: <Key className="h-4 w-4" /> },
     { id: 'backup', label: 'Backup & Restore', icon: <HardDrive className="h-4 w-4" /> },
+    { id: 'updates', label: 'System Updates', icon: <DownloadCloud className="h-4 w-4" /> },
   ];
 
   return (
@@ -182,7 +206,29 @@ export const SettingsPage: React.FC = () => {
                 </Button>
               </div>
             </div>
-          )}
+          ) : activeTab === 'updates' ? (
+            <div className="flex flex-col gap-5">
+              <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm uppercase tracking-wider">System Auto-Updater</h3>
+              <div className="flex items-center gap-4 p-4 border border-slate-100 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30">
+                <DownloadCloud className="h-10 w-10 text-blue-500 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="font-bold text-slate-800 dark:text-white text-sm">Always Up-To-Date</span>
+                  <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">
+                    We automatically check for new versions on GitHub Releases. When an update is available, you will be prompted to download and install it seamlessly.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-4 mt-2">
+                <Button 
+                  onClick={handleCheckUpdates} 
+                  disabled={isCheckingUpdate}
+                  icon={isCheckingUpdate ? <Loader2 className="h-4 w-4 animate-spin" /> : <DownloadCloud className="h-4 w-4" />}
+                >
+                  {isCheckingUpdate ? 'Checking...' : 'Check for Updates Now'}
+                </Button>
+              </div>
+            </div>
+          ) : null}
         </Card>
       </div>
     </div>
