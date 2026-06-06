@@ -52,9 +52,7 @@ export const Sidebar: React.FC = () => {
       {/* Top logo */}
       <div className="flex items-center justify-between px-5 py-6 border-b border-slate-800">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="h-9 w-9 bg-primary-600 rounded-xl flex items-center justify-center shrink-0 shadow-md shadow-primary-500/20">
-            <span className="text-white font-extrabold text-lg tracking-wider">U</span>
-          </div>
+          <img src="/logo.png" alt="URDIGIX Logo" className="h-10 object-contain drop-shadow-md" />
           {!sidebarCollapsed && (
             <div className="flex flex-col">
               <span className="text-white font-black text-sm tracking-widest uppercase">URDIGIX</span>

@@ -23,7 +23,7 @@ win:
     - target: nsis
       arch:
         - x64
-  icon: build/icon.ico
+  icon: build/icon.png
   artifactName: "${productName}-Setup-${version}.${ext}"
   publisherName: URDIGIX Solutions (Pty) Ltd
   verifyUpdateCodeSignature: false
@@ -35,8 +35,8 @@ nsis:
   createDesktopShortcut: true
   createStartMenuShortcut: true
   shortcutName: URDIGIX Solutions ERP
-  installerIcon: build/icon.ico
-  uninstallerIcon: build/icon.ico
+  installerIcon: build/icon.png
+  uninstallerIcon: build/icon.png
   license: LICENSE
   perMachine: false
   deleteAppDataOnUninstall: false

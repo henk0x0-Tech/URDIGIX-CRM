@@ -114,21 +114,11 @@ function createSplashWindow(): void {
           color: #f8fafc;
           -webkit-app-region: drag;
         }
-        .logo-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .logo-img {
           width: 80px;
           height: 80px;
-          border-radius: 20px;
-          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          object-fit: contain;
           margin-bottom: 24px;
-          box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
-        }
-        .logo-text {
-          font-size: 32px;
-          font-weight: 800;
-          letter-spacing: -1px;
         }
         h1 {
           font-size: 28px;
@@ -172,9 +162,7 @@ function createSplashWindow(): void {
       </style>
     </head>
     <body>
-      <div class="logo-container">
-        <span class="logo-text">U</span>
-      </div>
+      <img src="data:image/png;base64,${require('fs').readFileSync(require('path').join(__dirname, '../../build/icon.png')).toString('base64')}" class="logo-img" />
       <h1>URDIGIX</h1>
       <p class="subtitle">Solutions ERP</p>
       <div class="loader"></div>
@@ -190,7 +178,7 @@ function createSplashWindow(): void {
 
 function createMainWindow(): void {
   const preloadPath = join(__dirname, '../preload/index.js');
-  const iconPath = join(__dirname, '../../build/icon.ico');
+  const iconPath = join(__dirname, '../../build/icon.png');
 
   let icon: Electron.NativeImage | undefined;
   try {
