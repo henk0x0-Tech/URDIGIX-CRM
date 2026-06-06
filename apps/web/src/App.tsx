@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
-import AutoUpdater from './components/common/AutoUpdater';
 
 // Layouts
 import DashboardLayout from './components/layout/DashboardLayout';
@@ -31,11 +30,9 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 export const App: React.FC = () => {
   return (
-    <>
-      <AutoUpdater />
-      <Routes>
-        {/* Auth Routes */}
-        <Route element={<AuthLayout />}>
+    <Routes>
+      {/* Auth Routes */}
+      <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<div className="text-center font-bold p-4">Forgot Password (Simulated)</div>} />
@@ -64,10 +61,9 @@ export const App: React.FC = () => {
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 };
 
