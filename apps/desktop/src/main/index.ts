@@ -10,6 +10,32 @@ import log from 'electron-log';
 import { createTray, destroyTray } from './tray';
 import { setupAutoUpdater } from './updater';
 import { registerAllIpcHandlers } from './ipc/index';
+import { fork, ChildProcess } from 'child_process';
+
+let apiProcess: ChildProcess | null = null;
+
+function startApiServer() {
+  log.info('Starting bundled API server...');
+  const apiPath = app.isPackaged 
+    ? join(process.resourcesPath, 'api/dist/index.js')
+    : join(__dirname, '../../../api/dist/index.js');
+  
+  apiProcess = fork(apiPath, [], {
+    env: {
+      ...process.env,
+      PORT: '3001',
+      DATABASE_URL: process.env.DATABASE_URL || 'postgresql://postgres:Balakrishna%40143@db.zluajqremconqvwcdebb.supabase.co:5432/postgres'
+    },
+    stdio: 'pipe'
+  });
+
+  apiProcess.stdout?.on('data', (data) => log.info(`[API]: ${data.toString().trim()}`));
+  apiProcess.stderr?.on('data', (data) => log.error(`[API ERROR]: ${data.toString().trim()}`));
+  
+  apiProcess.on('exit', (code) => {
+    log.info(`API server exited with code ${code}`);
+  });
+}
 
 const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 
@@ -38,6 +64,7 @@ if (!gotTheLock) {
   });
 
   app.whenReady().then(() => {
+    startApiServer();
     createSplashWindow();
     createMainWindow();
     registerAllIpcHandlers(mainWindow!);
@@ -61,6 +88,10 @@ if (!gotTheLock) {
   });
 
   app.on('before-quit', () => {
+    if (apiProcess) {
+      log.info('Killing API server...');
+      apiProcess.kill();
+    }
     if (mainWindow) {
       mainWindow.removeAllListeners('close');
       mainWindow.close();

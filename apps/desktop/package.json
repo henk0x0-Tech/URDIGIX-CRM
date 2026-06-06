@@ -5,7 +5,7 @@
   "main": "dist/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",
-    "build": "electron-vite build && node scripts/copy-renderer.js",
+    "build": "electron-vite build && node scripts/copy-renderer.js && node scripts/copy-api.js",
     "preview": "electron-vite preview",
     "package": "electron-builder --win",
     "package:dir": "electron-builder --win --dir"
