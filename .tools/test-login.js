@@ -1,6 +1,6 @@
 const http = require('http');
 
-const data = JSON.stringify({ email: 'admin@urdigix.com', password: 'password' });
+const data = JSON.stringify({ email: 'admin@urdigix.com', password: 'Admin@123' });
 
 const options = {
   hostname: 'localhost',
@@ -9,7 +9,8 @@ const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Content-Length': data.length
+    'Content-Length': data.length,
+    'Origin': 'file://'
   }
 };
 
@@ -18,6 +19,7 @@ const req = http.request(options, (res) => {
   res.on('data', (chunk) => body += chunk);
   res.on('end', () => {
     console.log('Status Code:', res.statusCode);
+    console.log('Headers:', res.headers);
     console.log('Response Body:', body);
   });
 });

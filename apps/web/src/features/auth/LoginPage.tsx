@@ -32,7 +32,7 @@ export const LoginPage: React.FC = () => {
       const rawMessage = axios.isAxiosError(error) ? error.response?.data?.message : undefined;
       const message = rawMessage?.includes('Authentication failed against database server')
         ? 'Database authentication failed. Please check DATABASE_URL in .env.'
-        : rawMessage || 'Unable to sign in. Please check the API and database connection.';
+        : rawMessage || `Error: ${error instanceof Error ? error.message : 'Unknown'} | Please check the API.`;
       toast.error(message);
     } finally {
       setLoading(false);

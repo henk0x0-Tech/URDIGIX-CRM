@@ -208,7 +208,7 @@ function createMainWindow(): void {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
-      webSecurity: true,
+      webSecurity: false,
       spellcheck: true,
     },
   });
